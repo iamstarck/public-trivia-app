@@ -1,0 +1,22 @@
+name: CI/CD Develop
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci-base.yml
+
+  deploy-staging:
+    needs: ci
+    uses: ./.github/workflows/deploy-netlify.yml
+    with:
+      production: false
+    secrets:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      SITE_ID: ${{ vars.NETLIFY_SITE_ID_STAGING }}
