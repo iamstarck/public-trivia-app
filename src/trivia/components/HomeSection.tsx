@@ -20,6 +20,7 @@ import { CircleAlertIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useTriviaStore from "../stores/useTriviaStore";
 
 const playerSchema = z.object({
   playerName: z
@@ -31,6 +32,8 @@ const playerSchema = z.object({
 type PlayerFormValues = z.infer<typeof playerSchema>;
 
 const HomeSection = () => {
+  const insertPlayerName = useTriviaStore((s) => s.setUserName);
+
   const defaultValues: PlayerFormValues = {
     playerName: "",
   };
@@ -47,7 +50,9 @@ const HomeSection = () => {
     formState: { errors },
   } = form;
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (data: PlayerFormValues) => {
+    insertPlayerName(data);
+
     reset(defaultValues);
   };
 
