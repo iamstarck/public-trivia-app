@@ -16,4 +16,4 @@ jobs:
       production: true
     secrets:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      SITE_ID: ${{ vars.NETLIFY_SITE_ID_PRODUCTION }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PRODUCTION }}
