@@ -34,6 +34,6 @@ jobs:
         with:
           publish-dir: ./dist
           production-deploy: ${{ inputs.production }}
-          site-id: ${{ secrets.SITE_ID }}
         env:
+          SITE_ID: ${{ secrets.SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
