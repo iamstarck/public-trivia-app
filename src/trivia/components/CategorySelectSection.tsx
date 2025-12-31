@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useTriviaStore, {
   type Difficulty,
-  type QuizType,
+  type TriviaType,
 } from "../stores/useTriviaStore";
 import { cn } from "@/lib/utils";
 import {
@@ -27,17 +27,20 @@ import { useCategories } from "@/hooks/useCategories";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const CategorySelectSection = () => {
-  const { userName, category, difficulty, quizType } = useTriviaStore();
+  const { userName, category, difficulty, triviaType } = useTriviaStore();
   const setCategory = useTriviaStore((s) => s.setCategory);
   const setDifficulty = useTriviaStore((s) => s.setDifficulty);
-  const setQuizType = useTriviaStore((s) => s.setQuizType);
+  const setTriviaType = useTriviaStore((s) => s.setTriviaType);
   const setScreen = useTriviaStore((s) => s.setScreen);
-  const changeUser = useTriviaStore((s) => s.changeUser);
+  const changeUser = useTriviaStore((s) => s.reset);
 
   const { data, isLoading, isError } = useCategories();
 
   const categories = data ?? [];
-  const canPlay = category !== null && difficulty !== null && quizType !== null;
+  const canPlay =
+    category !== undefined &&
+    difficulty !== undefined &&
+    triviaType !== undefined;
 
   if (isLoading) {
     return (
@@ -45,7 +48,7 @@ const CategorySelectSection = () => {
         <Card className="max-w-4xl m-4">
           <CardHeader>
             <CardTitle>Welcome, {userName}</CardTitle>
-            <CardDescription>Choose Your Quiz Category</CardDescription>
+            <CardDescription>Choose Your Trivia Category</CardDescription>
           </CardHeader>
 
           <CardContent className="grid gap-12">
@@ -68,7 +71,7 @@ const CategorySelectSection = () => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <Label>Quiz Type</Label>
+              <Label>Trivia Type</Label>
               <Skeleton className="h-11 lg:w-202.5 rounded-none" />
             </div>
           </CardContent>
@@ -83,7 +86,7 @@ const CategorySelectSection = () => {
         <Card className="max-w-4xl m-4">
           <CardHeader>
             <CardTitle>Welcome, {userName}</CardTitle>
-            <CardDescription>Choose Your Quiz Category</CardDescription>
+            <CardDescription>Choose Your Trivia Category</CardDescription>
           </CardHeader>
 
           <CardContent className="grid gap-12">
@@ -104,7 +107,7 @@ const CategorySelectSection = () => {
       <Card className="max-w-4xl m-4">
         <CardHeader>
           <CardTitle>Welcome, {userName}</CardTitle>
-          <CardDescription>Choose Your Quiz Category</CardDescription>
+          <CardDescription>Choose Your Trivia Category</CardDescription>
         </CardHeader>
 
         <CardContent className="grid gap-12">
@@ -120,7 +123,7 @@ const CategorySelectSection = () => {
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
             >
               {categories.map((cat) => (
-                <div key={cat.id} className="flex items-center space-x-2">
+                <div key={cat.id} className="flex items-start space-x-2">
                   <RadioGroupItem
                     id={String(cat.id)}
                     value={String(cat.id)}
@@ -145,7 +148,7 @@ const CategorySelectSection = () => {
           <div className="flex flex-col gap-4">
             <Label>Difficulty</Label>
             <Select
-              value={difficulty ?? undefined}
+              value={difficulty || ""}
               onValueChange={(value) => setDifficulty(value as Difficulty)}
             >
               <SelectTrigger>
@@ -163,17 +166,17 @@ const CategorySelectSection = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <Label>Quiz Type</Label>
+            <Label>Trivia Type</Label>
             <Select
-              value={quizType ?? undefined}
-              onValueChange={(value) => setQuizType(value as QuizType)}
+              value={triviaType || ""}
+              onValueChange={(value) => setTriviaType(value as TriviaType)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Choose Your Preference" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Quiz Type</SelectLabel>
+                  <SelectLabel>Trivia Type</SelectLabel>
                   <SelectItem value="multiple">Multiple</SelectItem>
                   <SelectItem value="boolean">Boolean</SelectItem>
                 </SelectGroup>
@@ -193,7 +196,7 @@ const CategorySelectSection = () => {
             variant="brutal"
             className="w-fit"
             disabled={!canPlay}
-            onClick={() => setScreen("quiz")}
+            onClick={() => setScreen("trivia")}
           >
             Play Now
           </Button>
