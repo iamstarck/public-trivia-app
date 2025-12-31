@@ -10,7 +10,7 @@ export interface TriviaQuestion {
 
 export const normalizeQuestions = (
   raw: Question[],
-  triviaType: TriviaType
+  triviaType: TriviaType,
 ): TriviaQuestion[] => {
   return raw.map((q) => {
     const decodedQuestion = he.decode(q.question);
@@ -22,7 +22,7 @@ export const normalizeQuestions = (
 
     if (triviaType === "multiple") {
       answers = [...decodedIncorrect, decodedCorrect].sort(
-        () => Math.random() - 0.5
+        () => Math.random() - 0.5,
       );
     } else {
       answers = ["True", "False"];
