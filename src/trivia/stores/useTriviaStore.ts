@@ -1,52 +1,101 @@
 import { create } from "zustand";
+import type { TriviaQuestion } from "../normalizer";
 
-type Screen = "home" | "category" | "quiz";
-export type Difficulty = "easy" | "medium" | "hard" | null;
-export type QuizType = "multiple" | "boolean" | null;
+type Screen = "home" | "category" | "trivia";
+export type Difficulty = "easy" | "medium" | "hard";
+export type TriviaType = "multiple" | "boolean";
 
 interface TriviaState {
   screen: Screen;
   userName: string;
   amount: number;
-  category?: number | null;
+  category?: number;
   categoryName: string;
   difficulty?: Difficulty;
-  quizType?: QuizType;
+  triviaType?: TriviaType;
+  questions: TriviaQuestion[];
+  answers: Record<number, number>;
+  currentIndex: number;
+  correct: number;
+  incorrect: number;
 
   setScreen: (screen: Screen) => void;
   setUserName: (data: { playerName: string }) => void;
   setAmount: (n: number) => void;
   setDifficulty: (d: Difficulty) => void;
-  setQuizType: (t: QuizType) => void;
+  setTriviaType: (t: TriviaType) => void;
   setCategory: (c?: number | null, name?: string) => void;
-  changeUser: () => void;
+  setQuestions: (qs: TriviaQuestion[]) => void;
+  nextQuestion: () => void;
+  addAnswer: (q: number, a: number) => void;
+  submitAnswer: (isCorrect: boolean) => void;
+
+  reset: () => void;
 }
 
 const useTriviaStore = create<TriviaState>((set) => ({
   screen: "home",
   userName: "",
   amount: 20,
-  difficulty: null as Difficulty | null,
-  category: null,
+  difficulty: undefined,
+  category: undefined,
   categoryName: "",
-  quizType: null as QuizType | null,
+  triviaType: undefined,
+  questions: [],
+  currentIndex: 0,
+  answers: {},
+  correct: 0,
+  incorrect: 0,
 
   setScreen: (screen) => set({ screen }),
   setUserName: (data) => set({ userName: data.playerName, screen: "category" }),
 
-  changeUser: () =>
-    set({
-      userName: "",
-      screen: "home",
-    }),
-
   setAmount: (n) => set({ amount: n }),
-  setDifficulty: (d) => set({ difficulty: d }),
-  setQuizType: (t) => set({ quizType: t }),
+  setDifficulty: (d?) => set({ difficulty: d ?? undefined }),
+  setTriviaType: (t?) => set({ triviaType: t ?? undefined }),
   setCategory: (c?: number | null, name?: string) =>
     set({
-      category: c ?? null,
+      category: c ?? undefined,
       categoryName: name ?? "",
+    }),
+
+  setQuestions: (qs: TriviaQuestion[]) =>
+    set({
+      questions: qs,
+      currentIndex: 0,
+      answers: {},
+      correct: 0,
+      incorrect: 0,
+    }),
+  nextQuestion: () => set((s) => ({ currentIndex: s.currentIndex + 1 })),
+  addAnswer: (qIndex, aIndex) =>
+    set((state) => ({
+      answers: {
+        ...state.answers,
+        [qIndex]: aIndex,
+      },
+    })),
+
+  submitAnswer: (isCorrect) =>
+    set((s) => ({
+      correct: isCorrect ? s.correct + 1 : s.correct,
+      incorrect: !isCorrect ? s.incorrect + 1 : s.incorrect,
+    })),
+
+  reset: () =>
+    set({
+      screen: "home",
+      userName: "",
+      amount: 20,
+      difficulty: undefined,
+      category: undefined,
+      categoryName: "",
+      triviaType: undefined,
+      questions: [],
+      currentIndex: 0,
+      answers: {},
+      correct: 0,
+      incorrect: 0,
     }),
 }));
 
