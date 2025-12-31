@@ -3,13 +3,13 @@ import { TOKEN_QUERY_KEY } from "./useToken";
 import { fetchQuestions } from "@/trivia/api/questions.service";
 import { requestToken } from "@/trivia/api/token.service";
 
-interface Question {
+export interface Question {
   type: string;
   difficulty: string;
   category: string;
   question: string;
   correct_answer: string;
-  incorrect_answer: string[];
+  incorrect_answers: string[];
 }
 
 interface QuestionResponse {
@@ -19,8 +19,8 @@ interface QuestionResponse {
 
 export interface QuestionParams {
   amount: number;
-  type: "multiple" | "boolean";
-  category?: number;
+  type?: "multiple" | "boolean";
+  category?: number | null;
   difficulty?: "easy" | "medium" | "hard";
 }
 
@@ -47,11 +47,16 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
         throw new Error("Token not ready");
       }
 
-      const query = new URLSearchParams({
-        amount: String(params.amount),
-        type: params.type,
-        token,
-      });
+      const query = new URLSearchParams();
+
+      query.append("amount", String(params.amount));
+      query.append("token", token);
+
+      if (params.type) query.append("type", params.type);
+      if (params.category != null)
+        query.append("category", String(params.category));
+
+      if (params.difficulty) query.append("difficulty", params.difficulty);
 
       if (params.category) query.append("category", String(params.category));
       if (params.difficulty)
