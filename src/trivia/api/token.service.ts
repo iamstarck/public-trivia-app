@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
+import { setStoredToken } from "../stores/token.storage";
 
 interface TokenResponse {
   response_code: number;
@@ -11,31 +12,11 @@ export const requestToken = async (): Promise<string> => {
     "/api_token.php?command=request",
   );
 
+  if (!data.token) {
+    throw new Error("Failed to fetch token");
+  }
+
+  setStoredToken(data.token);
+
   return data.token;
 };
-
-// let cachedToken: string | null = null;
-// export const TOKEN_VAR = "public-trivia_token";
-
-// const getToken = async (): Promise<string> => {
-//   if (cachedToken) return cachedToken;
-
-//   const local = localStorage.getItem(TOKEN_VAR);
-//   if (local) {
-//     cachedToken = local;
-
-//     return local;
-//   }
-
-//   cachedToken = response.data.token;
-//   localStorage.setItem(TOKEN_VAR, cachedToken);
-
-//   return cachedToken;
-// };
-
-// const clearToken = () => {
-//   cachedToken = null;
-//   localStorage.removeItem(TOKEN_VAR);
-// };
-
-// export { getToken, clearToken };

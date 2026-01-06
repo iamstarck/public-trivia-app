@@ -177,8 +177,8 @@ const CategorySelectSection = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Trivia Type</SelectLabel>
-                  <SelectItem value="multiple">Multiple</SelectItem>
-                  <SelectItem value="boolean">Boolean</SelectItem>
+                  <SelectItem value="multiple">Multiple Choice</SelectItem>
+                  <SelectItem value="boolean">True/False</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

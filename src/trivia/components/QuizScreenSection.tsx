@@ -13,6 +13,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { useEffect } from "react";
 import { normalizeQuestions } from "../normalizer";
 import AnswersButton from "./atoms/AnswersButton";
+import { useQueryClient } from "@tanstack/react-query";
+import { TOKEN_QUERY_KEY } from "@/hooks/useToken";
 
 const QuizScreenSection = () => {
   const {
@@ -40,6 +42,8 @@ const QuizScreenSection = () => {
   const submitAnswer = useTriviaStore((a) => a.submitAnswer);
   const nextQuestion = useTriviaStore((q) => q.nextQuestion);
 
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     if (!data || !triviaType) return;
 
@@ -48,6 +52,11 @@ const QuizScreenSection = () => {
   }, [data, triviaType, setQuestions]);
 
   const currentQuestion = questions[currentIndex];
+
+  const onHandleRetry = async () => {
+    queryClient.removeQueries({ queryKey: TOKEN_QUERY_KEY });
+    await refetch();
+  };
 
   const onHandleAnswer = (answerIndex: number) => {
     const q = questions[currentIndex];
@@ -65,19 +74,23 @@ const QuizScreenSection = () => {
         <h1 className="text-3xl font-bold text-center leading-normal text-primary">
           Error starting Quiz
         </h1>
-        <Button variant="brutal" onClick={() => refetch()}>
+        <Button variant="brutal" onClick={() => onHandleRetry()}>
           Retry
         </Button>
       </div>
     );
   }
 
-  if (isLoading || !currentQuestion) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center min-h-screen justify-center">
         <Spinner />
       </div>
     );
+  }
+
+  if (!currentQuestion) {
+    return null;
   }
 
   return (
@@ -87,7 +100,7 @@ const QuizScreenSection = () => {
           <CardTitle>
             <div className="flex justify-between">
               <h2>Player: {userName}</h2>
-              <h2 className="text-accent">10:00</h2>
+              {/* <h2 className="text-accent">10:00</h2> */}
             </div>
           </CardTitle>
           <CardDescription className="text-base font-extrabold">
@@ -116,7 +129,7 @@ const QuizScreenSection = () => {
             <p className="text-lg">Correct: {correct}</p>
           </div>
           <div className="border-4 py-2 px-4 bg-red-500">
-            <p className="text-lg">Wrong: {incorrect}</p>
+            <p className="text-lg">Incorrect: {incorrect}</p>
           </div>
         </CardFooter>
       </Card>

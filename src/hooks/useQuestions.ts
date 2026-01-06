@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { TOKEN_QUERY_KEY } from "./useToken";
 import { fetchQuestions } from "@/trivia/api/questions.service";
 import { requestToken } from "@/trivia/api/token.service";
+import { clearStoredToken } from "@/trivia/stores/token.storage";
 
 export interface Question {
   type: string;
@@ -56,8 +57,6 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
       if (params.category != null)
         query.append("category", String(params.category));
 
-      if (params.difficulty) query.append("difficulty", params.difficulty);
-
       if (params.category) query.append("category", String(params.category));
       if (params.difficulty)
         query.append("difficulty", String(params.difficulty));
@@ -65,7 +64,9 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
       const data: QuestionResponse = await fetchQuestions(query);
 
       if (data.response_code === 3 || data.response_code === 4) {
-        queryClient.invalidateQueries({ queryKey: TOKEN_QUERY_KEY });
+        clearStoredToken();
+        queryClient.removeQueries({ queryKey: TOKEN_QUERY_KEY });
+
         throw new Error("public-trivia_token invalid");
       }
 
