@@ -81,12 +81,16 @@ const QuizScreenSection = () => {
     );
   }
 
-  if (isLoading || !currentQuestion) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center min-h-screen justify-center">
         <Spinner />
       </div>
     );
+  }
+
+  if (!currentQuestion) {
+    return null;
   }
 
   return (
@@ -96,7 +100,7 @@ const QuizScreenSection = () => {
           <CardTitle>
             <div className="flex justify-between">
               <h2>Player: {userName}</h2>
-              <h2 className="text-accent">10:00</h2>
+              {/* <h2 className="text-accent">10:00</h2> */}
             </div>
           </CardTitle>
           <CardDescription className="text-base font-extrabold">
@@ -125,7 +129,7 @@ const QuizScreenSection = () => {
             <p className="text-lg">Correct: {correct}</p>
           </div>
           <div className="border-4 py-2 px-4 bg-red-500">
-            <p className="text-lg">Wrong: {incorrect}</p>
+            <p className="text-lg">Incorrect: {incorrect}</p>
           </div>
         </CardFooter>
       </Card>

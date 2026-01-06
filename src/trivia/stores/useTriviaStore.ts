@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { TriviaQuestion } from "../normalizer";
 
-type Screen = "home" | "category" | "trivia";
+type Screen = "home" | "category" | "trivia" | "result";
 export type Difficulty = "easy" | "medium" | "hard";
 export type TriviaType = "multiple" | "boolean";
 
@@ -67,7 +67,21 @@ const useTriviaStore = create<TriviaState>((set) => ({
       correct: 0,
       incorrect: 0,
     }),
-  nextQuestion: () => set((s) => ({ currentIndex: s.currentIndex + 1 })),
+
+  nextQuestion: () =>
+    set((s) => {
+      const nextIndex = s.currentIndex + 1;
+
+      if (nextIndex >= s.amount) {
+        return {
+          currentIndex: nextIndex,
+          screen: "result",
+        };
+      }
+
+      return { currentIndex: nextIndex };
+    }),
+
   addAnswer: (qIndex, aIndex) =>
     set((state) => ({
       answers: {

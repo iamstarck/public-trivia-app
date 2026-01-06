@@ -116,7 +116,7 @@ const CategorySelectSection = () => {
             <RadioGroup
               onValueChange={(value) => {
                 const selected = categories.find(
-                  (cat) => cat.id === Number(value),
+                  (cat) => cat.id === Number(value)
                 );
                 setCategory(Number(value), selected?.name ?? "");
               }}
@@ -135,7 +135,7 @@ const CategorySelectSection = () => {
                       "rounded-sm border-2 border-border px-8 py-4 transition-all cursor-pointer w-full text-center lg:text-left",
                       "shadow-[4px_4px_0_0_#070707] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-none",
                       "dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
-                      "peer-data-[state=checked]:bg-secondary peer-data-[state=checked]:shadow-none peer-data-[state=checked]:translate-y-1",
+                      "peer-data-[state=checked]:bg-secondary peer-data-[state=checked]:shadow-none peer-data-[state=checked]:translate-y-1"
                     )}
                   >
                     {cat.name}
@@ -177,8 +177,8 @@ const CategorySelectSection = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Trivia Type</SelectLabel>
-                  <SelectItem value="multiple">Multiple</SelectItem>
-                  <SelectItem value="boolean">Boolean</SelectItem>
+                  <SelectItem value="multiple">Multiple Choice</SelectItem>
+                  <SelectItem value="boolean">True/False</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

@@ -1,6 +1,7 @@
 import CategorySelectSection from "./trivia/components/CategorySelectSection";
 import HomeSection from "./trivia/components/HomeSection";
 import QuizScreenSection from "./trivia/components/QuizScreenSection";
+import ResultSection from "./trivia/components/ResultSection";
 import useTriviaStore from "./trivia/stores/useTriviaStore";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       {screen === "home" && <HomeSection />}
       {screen === "category" && <CategorySelectSection />}
       {screen === "trivia" && <QuizScreenSection />}
+      {screen === "result" && <ResultSection />}
     </main>
   );
 }
