@@ -95,7 +95,7 @@ const ResultSection = () => {
           <div
             className={cn(
               "flex flex-col items-center gap-4 border-4 p-8",
-              getPerformanceColor()
+              getPerformanceColor(),
             )}
           >
             <div>

@@ -9,7 +9,7 @@ interface TokenResponse {
 
 export const requestToken = async (): Promise<string> => {
   const { data } = await axiosInstance.get<TokenResponse>(
-    "/api_token.php?command=request"
+    "/api_token.php?command=request",
   );
 
   if (!data.token) {
