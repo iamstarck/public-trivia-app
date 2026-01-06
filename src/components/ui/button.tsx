@@ -20,9 +20,9 @@ const buttonVariants = cva(
         ghost: "text-base hover:bg-accent hover:text-accent-foreground",
         link: "text-base text-primary underline-offset-4 hover:underline",
         brutal:
-          "text-base rounded-sm border-2 border-border bg-accent px-8 py-4 text-background shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none dark:border-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
+          "text-base rounded-sm border-2 border-border bg-accent px-8 py-4 text-background shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none dark:active:shadow-none dark:border-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
         "brutal-normal":
-          "text-base rounded-sm border-2 border-border bg-background px-8 py-4 shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
+          "text-base rounded-sm border-2 border-border bg-background px-8 py-4 shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none dark:active:shadow-none dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -35,7 +35,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -55,7 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Button.displayName = "Button";
 
