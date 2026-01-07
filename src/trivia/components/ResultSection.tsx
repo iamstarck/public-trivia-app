@@ -84,8 +84,7 @@ const ResultSection = () => {
             <div className="bg-secondary border-4 w-fit p-4">
               <TrophyIcon size={"4rem"} />
             </div>
-
-            <h1>Quiz Over!</h1>
+            Quiz Over!
           </CardTitle>
           <CardDescription className="text-xl text-center font-extrabold">
             Well done, {userName}!
