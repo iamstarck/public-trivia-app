@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { TOKEN_QUERY_KEY, useToken } from "./useToken";
+import { useQuery } from "@tanstack/react-query";
+import { useToken } from "./useToken";
 import { fetchQuestions } from "@/trivia/api/questions.service";
-import { clearStoredToken } from "@/trivia/stores/token.storage";
+import type { TriviaError } from "@/trivia/api/trivia.errors";
 
 export interface Question {
   type: string;
@@ -25,7 +25,6 @@ export interface QuestionParams {
 }
 
 export const useQuestions = (params: QuestionParams, enabled = true) => {
-  const queryClient = useQueryClient();
   const { data: token } = useToken();
 
   return useQuery({
@@ -35,19 +34,18 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
       params.type,
       params.category ?? "all",
       params.difficulty ?? "any",
-      token,
     ],
 
     enabled: enabled && !!token,
-
     queryFn: async () => {
       if (!token) {
-        throw new Error("Token not ready");
+        throw { type: "TOKEN_INVALID" } satisfies TriviaError;
       }
 
-      const query = new URLSearchParams();
-      query.append("amount", String(params.amount));
-      query.append("token", token);
+      const query = new URLSearchParams({
+        amount: String(params.amount),
+        token,
+      });
 
       if (params.type) query.append("type", params.type);
       if (params.category != null)
@@ -58,16 +56,27 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
 
       const data: QuestionResponse = await fetchQuestions(query);
 
-      if (data.response_code === 3 || data.response_code === 4) {
-        clearStoredToken();
-        queryClient.removeQueries({ queryKey: TOKEN_QUERY_KEY });
+      switch (data.response_code) {
+        case 0:
+          return data.results;
 
-        throw new Error("Token invalid");
+        case 3:
+          throw { type: "TOKEN_INVALID" } satisfies TriviaError;
+
+        case 4:
+          throw { type: "TOKEN_EXHAUSTED" } satisfies TriviaError;
+
+        default:
+          throw { type: "UKNOWN" } satisfies TriviaError;
       }
-
-      return data.results;
     },
 
-    retry: 1,
+    retry: (count, error) => {
+      if (typeof error === "object" && error && "type" in error) {
+        return false;
+      }
+
+      return count < 1;
+    },
   });
 };
