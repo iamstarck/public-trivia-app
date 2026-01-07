@@ -7,6 +7,7 @@ export const useToken = () =>
   useQuery({
     queryKey: TOKEN_QUERY_KEY,
     queryFn: requestToken,
+
     staleTime: Infinity,
     gcTime: Infinity,
   });

@@ -60,7 +60,7 @@ const HomeSection = () => {
     <div className="flex flex-col items-center min-h-screen justify-center">
       <div className="px-15 py-10 border-dashed text-center flex flex-col gap-8">
         <div>
-          <h1 className="text-4xl font-extrabold text-center leading-normal">
+          <h1 className="text-4xl font-extrabold text-center leading-tight">
             Can You Guess It?
           </h1>
           <p className="leading-normal">
@@ -91,7 +91,7 @@ const HomeSection = () => {
               Start
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-106.25">
+          <DialogContent className="max-w-sm md:max-w-md">
             <DialogHeader>
               <DialogTitle>Ready to Play? Enter Your Name</DialogTitle>
               <DialogDescription>

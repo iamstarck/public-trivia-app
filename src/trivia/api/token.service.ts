@@ -6,36 +6,31 @@ interface TokenResponse {
   token: string;
 }
 
+interface ResetTokenResponse {
+  response_code: number;
+  token: string;
+}
+
 export const requestToken = async (): Promise<string> => {
   const { data } = await axiosInstance.get<TokenResponse>(
     "/api_token.php?command=request",
   );
 
+  if (!data.token) {
+    throw new Error("Failed to fetch token");
+  }
+
   return data.token;
 };
 
-// let cachedToken: string | null = null;
-// export const TOKEN_VAR = "public-trivia_token";
+export const resetToken = async (token: string): Promise<string> => {
+  const { data } = await axiosInstance.get<ResetTokenResponse>(
+    `/api_token.php?command=reset&token=${token}`,
+  );
 
-// const getToken = async (): Promise<string> => {
-//   if (cachedToken) return cachedToken;
+  if (!data.token) {
+    throw new Error("Failed to fetch token");
+  }
 
-//   const local = localStorage.getItem(TOKEN_VAR);
-//   if (local) {
-//     cachedToken = local;
-
-//     return local;
-//   }
-
-//   cachedToken = response.data.token;
-//   localStorage.setItem(TOKEN_VAR, cachedToken);
-
-//   return cachedToken;
-// };
-
-// const clearToken = () => {
-//   cachedToken = null;
-//   localStorage.removeItem(TOKEN_VAR);
-// };
-
-// export { getToken, clearToken };
+  return data.token;
+};

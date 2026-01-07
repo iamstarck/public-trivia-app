@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useEffect } from "react";
 import { normalizeQuestions } from "../normalizer";
 import AnswersButton from "./atoms/AnswersButton";
+import { CircleCheckIcon, CircleXIcon } from "lucide-react";
 
 const QuizScreenSection = () => {
   const {
@@ -29,16 +30,30 @@ const QuizScreenSection = () => {
     incorrect,
   } = useTriviaStore();
 
-  const { data, isLoading, isError, refetch } = useQuestions({
+  const { data, isLoading, error, isError, refetch } = useQuestions({
     amount,
     type: triviaType,
     category,
     difficulty,
   });
 
+  const setScreen = useTriviaStore((q) => q.setScreen);
   const setQuestions = useTriviaStore((q) => q.setQuestions);
   const submitAnswer = useTriviaStore((a) => a.submitAnswer);
   const nextQuestion = useTriviaStore((q) => q.nextQuestion);
+
+  useEffect(() => {
+    if (!error) return;
+
+    if (typeof error === "object" && error && "type" in error)
+      switch (error.type) {
+        case "TOKEN_INVALID":
+        case "TOKEN_EXHAUSTED":
+          setScreen("category");
+
+          return;
+      }
+  }, [error, setScreen]);
 
   useEffect(() => {
     if (!data || !triviaType) return;
@@ -60,11 +75,13 @@ const QuizScreenSection = () => {
   };
 
   if (isError) {
+    if (typeof error === "object" && error && "type" in error) {
+      return null;
+    }
+
     return (
       <div className="flex flex-col items-center min-h-screen justify-center gap-4">
-        <h1 className="text-3xl font-bold text-center leading-normal text-primary">
-          Error starting Quiz
-        </h1>
+        <h1 className="text-3xl font-bold text-center">Network error</h1>
         <Button variant="brutal" onClick={() => refetch()}>
           Retry
         </Button>
@@ -72,7 +89,7 @@ const QuizScreenSection = () => {
     );
   }
 
-  if (isLoading || !currentQuestion) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center min-h-screen justify-center">
         <Spinner />
@@ -80,14 +97,18 @@ const QuizScreenSection = () => {
     );
   }
 
+  if (!currentQuestion) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col items-center min-h-screen justify-center">
-      <Card className="max-w-4xl lg:w-4xl m-x-4">
+      <Card className="m-4 w-full max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <CardHeader>
           <CardTitle>
             <div className="flex justify-between">
               <h2>Player: {userName}</h2>
-              <h2 className="text-accent">10:00</h2>
+              {/* <h2 className="text-accent">10:00</h2> */}
             </div>
           </CardTitle>
           <CardDescription className="text-base font-extrabold">
@@ -99,7 +120,7 @@ const QuizScreenSection = () => {
             <p className="font-medium text-lg">
               Question {currentIndex + 1} of {amount}
             </p>
-            <h1 className="text-2xl font-extrabold leading-tight">
+            <h1 className="text-xl lg:text-2xl font-extrabold leading-tight">
               {questions[currentIndex].question}
             </h1>
           </div>
@@ -113,10 +134,14 @@ const QuizScreenSection = () => {
 
         <CardFooter className="flex gap-4 justify-center mt-8">
           <div className="border-4 py-2 px-4 bg-green-500">
-            <p className="text-lg">Correct: {correct}</p>
+            <p className="text-lg flex items-center gap-2 font-medium">
+              <CircleCheckIcon /> <span>{correct}</span>
+            </p>
           </div>
           <div className="border-4 py-2 px-4 bg-red-500">
-            <p className="text-lg">Wrong: {incorrect}</p>
+            <p className="text-lg flex items-center gap-2 font-medium">
+              <CircleXIcon /> <span>{incorrect}</span>
+            </p>
           </div>
         </CardFooter>
       </Card>

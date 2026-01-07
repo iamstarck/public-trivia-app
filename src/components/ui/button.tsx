@@ -10,19 +10,20 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "text-base bg-primary text-primary-foreground hover:bg-primary/90",
+          "text-base bg-primary text-primary-foreground hover:bg-primary/90 select-none",
         destructive:
-          "text-base bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "text-base bg-destructive text-destructive-foreground hover:bg-destructive/90 select-none",
         outline:
-          "text-base border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "text-base border border-input bg-background hover:bg-accent hover:text-accent-foreground select-none",
         secondary:
-          "text-base bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "text-base hover:bg-accent hover:text-accent-foreground",
-        link: "text-base text-primary underline-offset-4 hover:underline",
+          "text-base bg-secondary text-secondary-foreground hover:bg-secondary/80 select-none",
+        ghost:
+          "text-base hover:bg-accent hover:text-accent-foreground select-none",
+        link: "text-base text-primary underline-offset-4 hover:underline select-none",
         brutal:
-          "text-base rounded-sm border-2 border-border bg-accent px-8 py-4 text-background shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none dark:border-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
+          "text-base rounded-sm border-2 border-border bg-accent px-8 py-4 text-background shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none dark:active:shadow-none dark:border-background dark:shadow-[4px_4px_0_0_#e8e9e1] select-none",
         "brutal-normal":
-          "text-base rounded-sm border-2 border-border bg-background px-8 py-4 shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
+          "text-base rounded-sm border-2 border-border bg-background px-8 py-4 shadow-[4px_4px_0_0_#070707] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:hover:shadow-none active:translate-x-[3px] active:translate-y-[3px] active:shadow-none dark:active:shadow-none dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1] select-none",
       },
       size: {
         default: "h-10 px-4 py-2",
