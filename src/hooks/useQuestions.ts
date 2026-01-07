@@ -1,7 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { TOKEN_QUERY_KEY } from "./useToken";
+import { TOKEN_QUERY_KEY, useToken } from "./useToken";
 import { fetchQuestions } from "@/trivia/api/questions.service";
-import { requestToken } from "@/trivia/api/token.service";
 import { clearStoredToken } from "@/trivia/stores/token.storage";
 
 export interface Question {
@@ -27,6 +26,7 @@ export interface QuestionParams {
 
 export const useQuestions = (params: QuestionParams, enabled = true) => {
   const queryClient = useQueryClient();
+  const { data: token } = useToken();
 
   return useQuery({
     queryKey: [
@@ -35,21 +35,17 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
       params.type,
       params.category ?? "all",
       params.difficulty ?? "any",
+      token,
     ],
 
-    enabled,
-    queryFn: async () => {
-      const token = await queryClient.fetchQuery({
-        queryKey: TOKEN_QUERY_KEY,
-        queryFn: requestToken,
-      });
+    enabled: enabled && !!token,
 
+    queryFn: async () => {
       if (!token) {
         throw new Error("Token not ready");
       }
 
       const query = new URLSearchParams();
-
       query.append("amount", String(params.amount));
       query.append("token", token);
 
@@ -57,7 +53,6 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
       if (params.category != null)
         query.append("category", String(params.category));
 
-      if (params.category) query.append("category", String(params.category));
       if (params.difficulty)
         query.append("difficulty", String(params.difficulty));
 
@@ -67,7 +62,7 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
         clearStoredToken();
         queryClient.removeQueries({ queryKey: TOKEN_QUERY_KEY });
 
-        throw new Error("public-trivia_token invalid");
+        throw new Error("Token invalid");
       }
 
       return data.results;
