@@ -45,7 +45,7 @@ const CategorySelectSection = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center min-h-screen justify-center">
-        <Card className="max-w-4xl m-4">
+        <Card className="m-4 w-full max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
           <CardHeader>
             <CardTitle>Welcome, {userName}</CardTitle>
             <CardDescription>Choose Your Trivia Category</CardDescription>
@@ -59,7 +59,7 @@ const CategorySelectSection = () => {
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Skeleton
                     key={i}
-                    className="h-11 w-56.25 lg:w-47.5 rounded-none"
+                    className="h-11 w-full md:w-full lg:w-full rounded-none"
                   />
                 ))}
               </div>
@@ -67,12 +67,12 @@ const CategorySelectSection = () => {
 
             <div className="flex flex-col gap-4">
               <Label>Difficulty</Label>
-              <Skeleton className="h-11 lg:w-202.5 rounded-none" />
+              <Skeleton className="h-11 lg:w-202.5 xl:w-full rounded-none" />
             </div>
 
             <div className="flex flex-col gap-4">
               <Label>Trivia Type</Label>
-              <Skeleton className="h-11 lg:w-202.5 rounded-none" />
+              <Skeleton className="h-11 lg:w-202.5 xl:w-full rounded-none" />
             </div>
           </CardContent>
         </Card>
@@ -83,7 +83,7 @@ const CategorySelectSection = () => {
   if (isError) {
     return (
       <div className="flex flex-col items-center min-h-screen justify-center">
-        <Card className="max-w-4xl m-4">
+        <Card className="m-4 w-full max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
           <CardHeader>
             <CardTitle>Welcome, {userName}</CardTitle>
             <CardDescription>Choose Your Trivia Category</CardDescription>
@@ -104,7 +104,7 @@ const CategorySelectSection = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen justify-center">
-      <Card className="max-w-4xl m-4">
+      <Card className="m-4 w-full max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <CardHeader>
           <CardTitle>Welcome, {userName}</CardTitle>
           <CardDescription>Choose Your Trivia Category</CardDescription>
