@@ -7,7 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TrophyIcon } from "lucide-react";
+import {
+  BicepsFlexedIcon,
+  CircleCheckIcon,
+  CircleXIcon,
+  HandMetalIcon,
+  StarIcon,
+  ThumbsUpIcon,
+  TrophyIcon,
+} from "lucide-react";
 import useTriviaStore from "../stores/useTriviaStore";
 import { cn } from "@/lib/utils";
 
@@ -33,23 +41,34 @@ const ResultSection = () => {
 
   const resultPercentage = Math.round((correct / amount) * 100);
 
-  const getPerformanceMessage = () => {
-    let performanceMessage = "";
+  const getPerformanceMessage = (resultPercentage: number) => {
     switch (true) {
       case resultPercentage >= 90:
-        performanceMessage = "Outstanding! 🌟";
-        break;
+        return (
+          <>
+            Outstanding! <HandMetalIcon className="fill-secondary" />;
+          </>
+        );
       case resultPercentage >= 70:
-        performanceMessage = "Great job! 👏";
-        break;
+        return (
+          <>
+            Great job! <StarIcon className="fill-secondary" />
+          </>
+        );
       case resultPercentage >= 50:
-        performanceMessage = "Good effort! 👍";
-        break;
+        return (
+          <>
+            Good effort! <ThumbsUpIcon className="fill-secondary" />
+          </>
+        );
       default:
-        performanceMessage = "Keep practicing! 💪";
+        return (
+          <>
+            Keep practicing!
+            <BicepsFlexedIcon className="fill-secondary" />
+          </>
+        );
     }
-
-    return performanceMessage;
   };
 
   const getPerformanceColor = () => {
@@ -101,37 +120,43 @@ const ResultSection = () => {
               <h2 className="text-4xl font-bold text-center leading-normal">
                 {resultPercentage}%
               </h2>
-              <h2 className="text-2xl font-bold text-center leading-normal">
-                {getPerformanceMessage()}
+
+              <h2 className="text-2xl font-bold text-center leading-normal flex items-center gap-2">
+                {getPerformanceMessage(resultPercentage)}
               </h2>
             </div>
 
-            <div className="flex flex-col border-4 p-4 gap-4 bg-accent-foreground w-md">
-              <p className="flex justify-between border-b-2 pb-2 text-base font-bold">
-                CATEGORY: <span>{toSentenceCase(categoryName)}</span>
-              </p>
-              <p className="flex justify-between border-b-2 pb-2 text-base font-bold">
-                DIFFICULTY: <span>{toSentenceCase(difficulty)}</span>
-              </p>
-              <p className="flex justify-between border-b-2 pb-2 text-base font-bold">
-                TYPE:{" "}
+            <div className="flex flex-col text-center border-4 p-4 gap-4 bg-accent-foreground md:w-md">
+              <div className="block md:flex justify-between border-b-2 pb-2 text-base font-bold">
+                <p>CATEGORY:</p>
+                <span>{toSentenceCase(categoryName)}</span>
+              </div>
+              <div className="block md:flex justify-between border-b-2 pb-2 text-base font-bold">
+                <p>DIFFICULTY:</p>
+                <span>{toSentenceCase(difficulty)}</span>
+              </div>
+              <div className="block md:flex justify-between border-b-2 pb-2 text-base font-bold">
+                <p>TYPE:</p>
                 <span>{toSentenceCase(convertTriviaType(triviaType))}</span>
-              </p>
-              <p className="flex justify-between border-b-2 pb-2 text-base font-bold">
-                TOTAL QUESTIONS: <span>{amount}</span>
-              </p>
+              </div>
+              <div className="block md:flex justify-between border-b-2 pb-2 text-base font-bold">
+                <p>TOTAL QUESTIONS:</p>
+                <span>{amount}</span>
+              </div>
             </div>
           </div>
 
           <div className="flex justify-center mt-8 gap-8">
             <div className="border-4 py-4 px-8 bg-green-500">
               <p className="text-xl font-bold flex flex-col text-center">
-                CORRECT<span>{correct}</span>
+                <CircleCheckIcon />
+                <span>{correct}</span>
               </p>
             </div>
             <div className="border-4 py-4 px-8 bg-red-500">
               <p className="text-xl font-bold flex flex-col text-center">
-                INCORRECT<span>{incorrect}</span>
+                <CircleXIcon />
+                <span>{incorrect}</span>
               </p>
             </div>
           </div>

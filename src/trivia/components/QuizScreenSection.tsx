@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useEffect } from "react";
 import { normalizeQuestions } from "../normalizer";
 import AnswersButton from "./atoms/AnswersButton";
+import { CircleCheckIcon, CircleXIcon } from "lucide-react";
 
 const QuizScreenSection = () => {
   const {
@@ -102,7 +103,7 @@ const QuizScreenSection = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen justify-center">
-      <Card className="max-w-4xl lg:w-4xl m-x-4">
+      <Card className="m-4 w-full max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <CardHeader>
           <CardTitle>
             <div className="flex justify-between">
@@ -119,7 +120,7 @@ const QuizScreenSection = () => {
             <p className="font-medium text-lg">
               Question {currentIndex + 1} of {amount}
             </p>
-            <h1 className="text-2xl font-extrabold leading-tight">
+            <h1 className="text-xl lg:text-2xl font-extrabold leading-tight">
               {questions[currentIndex].question}
             </h1>
           </div>
@@ -133,10 +134,14 @@ const QuizScreenSection = () => {
 
         <CardFooter className="flex gap-4 justify-center mt-8">
           <div className="border-4 py-2 px-4 bg-green-500">
-            <p className="text-lg">Correct: {correct}</p>
+            <p className="text-lg flex items-center gap-2 font-medium">
+              <CircleCheckIcon /> <span>{correct}</span>
+            </p>
           </div>
           <div className="border-4 py-2 px-4 bg-red-500">
-            <p className="text-lg">Incorrect: {incorrect}</p>
+            <p className="text-lg flex items-center gap-2 font-medium">
+              <CircleXIcon /> <span>{incorrect}</span>
+            </p>
           </div>
         </CardFooter>
       </Card>
