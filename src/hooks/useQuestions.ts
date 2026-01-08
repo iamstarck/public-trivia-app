@@ -18,7 +18,7 @@ interface QuestionResponse {
 }
 
 export interface QuestionParams {
-  amount: number;
+  amount: number | null;
   type?: "multiple" | "boolean";
   category?: number | null;
   difficulty?: "easy" | "medium" | "hard";
