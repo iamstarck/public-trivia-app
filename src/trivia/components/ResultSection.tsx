@@ -39,7 +39,8 @@ const ResultSection = () => {
     }
   };
 
-  const resultPercentage = Math.round((correct / amount) * 100);
+  const resultPercentage =
+    amount && amount > 0 ? Math.round((correct / amount) * 100) : 0;
 
   const getPerformanceMessage = (resultPercentage: number) => {
     switch (true) {

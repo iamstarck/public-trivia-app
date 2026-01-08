@@ -120,7 +120,7 @@ const QuizScreenSection = () => {
             <p className="font-medium text-lg">
               Question {currentIndex + 1} of {amount}
             </p>
-            <h1 className="text-xl lg:text-2xl font-extrabold leading-tight">
+            <h1 className="text-xl lg:text-2xl font-extrabold leading-tight select-none">
               {questions[currentIndex].question}
             </h1>
           </div>
