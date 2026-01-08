@@ -27,20 +27,25 @@ import { useCategories } from "@/hooks/useCategories";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const CategorySelectSection = () => {
-  const { userName, category, difficulty, triviaType } = useTriviaStore();
+  const { userName, category, difficulty, triviaType, amount } =
+    useTriviaStore();
   const setCategory = useTriviaStore((s) => s.setCategory);
   const setDifficulty = useTriviaStore((s) => s.setDifficulty);
   const setTriviaType = useTriviaStore((s) => s.setTriviaType);
+  const setAmount = useTriviaStore((s) => s.setAmount);
   const setScreen = useTriviaStore((s) => s.setScreen);
   const changeUser = useTriviaStore((s) => s.reset);
 
   const { data, isLoading, isError } = useCategories();
 
   const categories = data ?? [];
+  const amounts = [10, 15, 20];
+
   const canPlay =
     category !== undefined &&
     difficulty !== undefined &&
-    triviaType !== undefined;
+    triviaType !== undefined &&
+    amount !== null;
 
   if (isLoading) {
     return (
@@ -73,6 +78,16 @@ const CategorySelectSection = () => {
             <div className="flex flex-col gap-4">
               <Label>Trivia Type</Label>
               <Skeleton className="h-11 lg:w-202.5 xl:w-full rounded-none" />
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <Label>Amount</Label>
+
+              <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10  gap-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} className="h-11 w-20.5 rounded-none" />
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -132,7 +147,7 @@ const CategorySelectSection = () => {
                   <Label
                     htmlFor={String(cat.id)}
                     className={cn(
-                      "rounded-sm border-2 border-border px-8 py-4 transition-all cursor-pointer w-full text-center lg:text-left",
+                      "rounded-sm border-2 border-border px-8 py-4 transition-all cursor-pointer w-full text-center lg:text-left select-none",
                       "shadow-[4px_4px_0_0_#070707] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-none",
                       "dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
                       "peer-data-[state=checked]:bg-secondary peer-data-[state=checked]:shadow-none peer-data-[state=checked]:translate-y-1",
@@ -182,6 +197,37 @@ const CategorySelectSection = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <Label>Amount</Label>
+            <RadioGroup
+              onValueChange={(value) => {
+                setAmount(Number(value));
+              }}
+              className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10 gap-4"
+            >
+              {amounts.map((n) => (
+                <div key={n} className="flex items-start space-x-2">
+                  <RadioGroupItem
+                    id={`amount-${n}`}
+                    value={String(n)}
+                    className="sr-only peer"
+                  />
+                  <Label
+                    htmlFor={`amount-${n}`}
+                    className={cn(
+                      "rounded-sm border-2 border-border px-8 py-4 transition-all cursor-pointer w-fit text-center lg:text-left select-none",
+                      "shadow-[4px_4px_0_0_#070707] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-none",
+                      "dark:border-background dark:bg-zinc-800 dark:text-background dark:shadow-[4px_4px_0_0_#e8e9e1]",
+                      "peer-data-[state=checked]:bg-secondary peer-data-[state=checked]:shadow-none peer-data-[state=checked]:translate-y-1",
+                    )}
+                  >
+                    {n}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between p-0">

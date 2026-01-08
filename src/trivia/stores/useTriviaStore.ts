@@ -8,7 +8,7 @@ export type TriviaType = "multiple" | "boolean";
 interface TriviaState {
   screen: Screen;
   userName: string;
-  amount: number;
+  amount: number | null;
   category?: number;
   categoryName: string;
   difficulty?: Difficulty;
@@ -36,7 +36,7 @@ interface TriviaState {
 const useTriviaStore = create<TriviaState>((set) => ({
   screen: "home",
   userName: "",
-  amount: 20,
+  amount: null,
   difficulty: undefined,
   category: undefined,
   categoryName: "",
@@ -72,11 +72,13 @@ const useTriviaStore = create<TriviaState>((set) => ({
     set((s) => {
       const nextIndex = s.currentIndex + 1;
 
-      if (nextIndex >= s.amount) {
-        return {
-          currentIndex: nextIndex,
-          screen: "result",
-        };
+      if (s.amount !== null) {
+        if (nextIndex >= s.amount) {
+          return {
+            currentIndex: nextIndex,
+            screen: "result",
+          };
+        }
       }
 
       return { currentIndex: nextIndex };
@@ -100,7 +102,7 @@ const useTriviaStore = create<TriviaState>((set) => ({
     set({
       screen: "home",
       userName: "",
-      amount: 20,
+      amount: null,
       difficulty: undefined,
       category: undefined,
       categoryName: "",
