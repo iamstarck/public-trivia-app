@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface TriviaQuestion {
   question: string;
@@ -10,12 +11,16 @@ interface AnswersButtonProps {
   questions: TriviaQuestion[];
   currentIndex: number;
   onHandleAnswer: (answerIndex: number) => void;
+  answerFeedback: boolean;
+  buttonColorClass: (index: number) => string;
 }
 
 const AnswersButton: React.FC<AnswersButtonProps> = ({
   questions,
   currentIndex,
   onHandleAnswer,
+  answerFeedback,
+  buttonColorClass,
 }) => {
   return (
     <div className="grid lg:grid-cols-2 gap-4 w-full">
@@ -23,8 +28,12 @@ const AnswersButton: React.FC<AnswersButtonProps> = ({
         <Button
           key={index}
           onClick={() => onHandleAnswer(index)}
+          disabled={answerFeedback}
           variant="brutal-normal"
-          className="w-full max-w-sm min-h-20 h-auto mx-auto flex items-center hover:bg-secondary"
+          className={cn(
+            "w-full max-w-sm min-h-20 h-auto mx-auto flex items-center hover:bg-secondary",
+            buttonColorClass(index),
+          )}
         >
           <p className="text-left font-bold text-wrap text-lg leading-snug">
             {answer}
