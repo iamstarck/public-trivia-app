@@ -122,7 +122,11 @@ const TriviaScreenSection = () => {
   }
 
   if (!currentQuestion) {
-    return <p className="text-center">Invalid trivia state</p>;
+    return (
+      <div className="flex flex-col items-center min-h-screen justify-center">
+        <p className="text-center">Invalid trivia state</p>
+      </div>
+    );
   }
 
   return (
