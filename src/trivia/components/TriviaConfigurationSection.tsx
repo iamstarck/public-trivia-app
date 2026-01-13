@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { useCategories } from "@/hooks/useCategories";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const CategorySelectSection = () => {
+const TriviaConfigurationSection = () => {
   const { userName, category, difficulty, triviaType, amount } =
     useTriviaStore();
   const setCategory = useTriviaStore((s) => s.setCategory);
@@ -252,4 +252,4 @@ const CategorySelectSection = () => {
   );
 };
 
-export default CategorySelectSection;
+export default TriviaConfigurationSection;

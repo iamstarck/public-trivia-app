@@ -15,7 +15,7 @@ import { normalizeQuestions } from "../normalizer";
 import AnswersButton from "./atoms/AnswersButton";
 import { CircleCheckIcon, CircleXIcon } from "lucide-react";
 
-const QuizScreenSection = () => {
+const TriviaScreenSection = () => {
   const {
     userName,
     amount,
@@ -30,7 +30,7 @@ const QuizScreenSection = () => {
     incorrect,
   } = useTriviaStore();
 
-  const { data, isLoading, error, isError, refetch } = useQuestions({
+  const { data, isLoading, error, refetch } = useQuestions({
     amount,
     type: triviaType,
     category,
@@ -45,14 +45,13 @@ const QuizScreenSection = () => {
   useEffect(() => {
     if (!error) return;
 
-    if (typeof error === "object" && error && "type" in error)
-      switch (error.type) {
-        case "TOKEN_INVALID":
-        case "TOKEN_EXHAUSTED":
-          setScreen("category");
-
-          return;
-      }
+    if (
+      typeof error === "object" &&
+      "type" in error &&
+      (error.type === "TOKEN_INVALID" || error.type === "TOKEN_EXHAUSTED")
+    ) {
+      setScreen("configuration");
+    }
   }, [error, setScreen]);
 
   useEffect(() => {
@@ -74,14 +73,14 @@ const QuizScreenSection = () => {
     nextQuestion();
   };
 
-  if (isError) {
-    if (typeof error === "object" && error && "type" in error) {
-      return null;
-    }
-
+  if (error) {
     return (
       <div className="flex flex-col items-center min-h-screen justify-center gap-4">
-        <h1 className="text-3xl font-bold text-center">Network error</h1>
+        <h1 className="text-3xl font-bold text-center">
+          {typeof error === "object" && "type" in error
+            ? "Something went wrong"
+            : "Network error"}
+        </h1>
         <Button variant="brutal" onClick={() => refetch()}>
           Retry
         </Button>
@@ -98,7 +97,7 @@ const QuizScreenSection = () => {
   }
 
   if (!currentQuestion) {
-    return null;
+    return <p className="text-center">Invalid trivia state</p>;
   }
 
   return (
@@ -149,4 +148,4 @@ const QuizScreenSection = () => {
   );
 };
 
-export default QuizScreenSection;
+export default TriviaScreenSection;

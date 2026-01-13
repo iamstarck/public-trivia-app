@@ -1,8 +1,8 @@
-import CategorySelectSection from "./trivia/components/CategorySelectSection";
 import HomeSection from "./trivia/components/HomeSection";
-import QuizScreenSection from "./trivia/components/QuizScreenSection";
 import ResultSection from "./trivia/components/ResultSection";
+import TriviaConfigurationSection from "./trivia/components/TriviaConfigurationSection";
 import useTriviaStore from "./trivia/stores/useTriviaStore";
+import TriviaScreenSection from "./trivia/components/TriviaScreenSection";
 
 function App() {
   const screen = useTriviaStore((s) => s.screen);
@@ -10,8 +10,8 @@ function App() {
   return (
     <main>
       {screen === "home" && <HomeSection />}
-      {screen === "category" && <CategorySelectSection />}
-      {screen === "trivia" && <QuizScreenSection />}
+      {screen === "configuration" && <TriviaConfigurationSection />}
+      {screen === "trivia" && <TriviaScreenSection />}
       {screen === "result" && <ResultSection />}
     </main>
   );
