@@ -28,6 +28,8 @@ const TriviaScreenSection = () => {
     addAnswer,
     correct,
     incorrect,
+    answerFeedback,
+    answers,
   } = useTriviaStore();
 
   const { data, isLoading, error, refetch } = useQuestions({
@@ -41,6 +43,7 @@ const TriviaScreenSection = () => {
   const setQuestions = useTriviaStore((q) => q.setQuestions);
   const submitAnswer = useTriviaStore((a) => a.submitAnswer);
   const nextQuestion = useTriviaStore((q) => q.nextQuestion);
+  const showAnswerFeedback = useTriviaStore((s) => s.showAnswerFeedback);
 
   useEffect(() => {
     if (!error) return;
@@ -64,13 +67,35 @@ const TriviaScreenSection = () => {
   const currentQuestion = questions[currentIndex];
 
   const onHandleAnswer = (answerIndex: number) => {
+    if (answerFeedback) return;
+
     const q = questions[currentIndex];
     const isCorrect = answerIndex === q.correctIndex;
 
     addAnswer(currentIndex, answerIndex);
     submitAnswer(isCorrect);
 
-    nextQuestion();
+    showAnswerFeedback(true);
+    setTimeout(nextQuestion, 1500);
+  };
+
+  const getButtonClass = (answerIndex: number) => {
+    if (!answerFeedback) {
+      return "";
+    }
+
+    if (answerIndex === currentQuestion.correctIndex) {
+      return "bg-green-500";
+    }
+
+    if (
+      answerIndex === answers[currentIndex] &&
+      answerIndex !== currentQuestion.correctIndex
+    ) {
+      return "bg-primary";
+    }
+
+    return "";
   };
 
   if (error) {
@@ -128,6 +153,8 @@ const TriviaScreenSection = () => {
             questions={questions}
             currentIndex={currentIndex}
             onHandleAnswer={onHandleAnswer}
+            answerFeedback={answerFeedback}
+            buttonColorClass={getButtonClass}
           />
         </CardContent>
 

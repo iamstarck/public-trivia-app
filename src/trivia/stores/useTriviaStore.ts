@@ -18,6 +18,7 @@ interface TriviaState {
   currentIndex: number;
   correct: number;
   incorrect: number;
+  answerFeedback: boolean;
 
   setScreen: (screen: Screen) => void;
   setUserName: (data: { playerName: string }) => void;
@@ -29,6 +30,7 @@ interface TriviaState {
   nextQuestion: () => void;
   addAnswer: (q: number, a: number) => void;
   submitAnswer: (isCorrect: boolean) => void;
+  showAnswerFeedback: (feedback: boolean) => void;
 
   reset: () => void;
 }
@@ -46,6 +48,7 @@ const useTriviaStore = create<TriviaState>((set) => ({
   answers: {},
   correct: 0,
   incorrect: 0,
+  answerFeedback: false,
 
   setScreen: (screen) => set({ screen }),
   setUserName: (data) =>
@@ -73,16 +76,15 @@ const useTriviaStore = create<TriviaState>((set) => ({
     set((s) => {
       const nextIndex = s.currentIndex + 1;
 
-      if (s.amount !== null) {
-        if (nextIndex >= s.amount) {
-          return {
-            currentIndex: nextIndex,
-            screen: "result",
-          };
-        }
+      if (s.amount !== null && nextIndex >= s.amount) {
+        return {
+          currentIndex: nextIndex,
+          screen: "result",
+          answerFeedback: false,
+        };
       }
 
-      return { currentIndex: nextIndex };
+      return { currentIndex: nextIndex, answerFeedback: false };
     }),
 
   addAnswer: (qIndex, aIndex) =>
@@ -99,6 +101,8 @@ const useTriviaStore = create<TriviaState>((set) => ({
       incorrect: !isCorrect ? s.incorrect + 1 : s.incorrect,
     })),
 
+  showAnswerFeedback: (feedback) => set({ answerFeedback: feedback }),
+
   reset: () =>
     set({
       screen: "home",
@@ -113,6 +117,7 @@ const useTriviaStore = create<TriviaState>((set) => ({
       answers: {},
       correct: 0,
       incorrect: 0,
+      answerFeedback: false,
     }),
 }));
 
