@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { TriviaQuestion } from "../normalizer";
 
-type Screen = "home" | "category" | "trivia" | "result";
+type Screen = "home" | "configuration" | "trivia" | "result";
 export type Difficulty = "easy" | "medium" | "hard";
 export type TriviaType = "multiple" | "boolean";
 
@@ -48,7 +48,8 @@ const useTriviaStore = create<TriviaState>((set) => ({
   incorrect: 0,
 
   setScreen: (screen) => set({ screen }),
-  setUserName: (data) => set({ userName: data.playerName, screen: "category" }),
+  setUserName: (data) =>
+    set({ userName: data.playerName, screen: "configuration" }),
 
   setAmount: (n) => set({ amount: n }),
   setDifficulty: (d?) => set({ difficulty: d ?? undefined }),
