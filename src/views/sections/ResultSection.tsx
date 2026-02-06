@@ -16,7 +16,7 @@ import {
   ThumbsUpIcon,
   TrophyIcon,
 } from "lucide-react";
-import useTriviaStore from "../stores/useTriviaStore";
+import useTriviaStore from "../../stores/useTriviaStore";
 import { cn } from "@/lib/utils";
 
 const ResultSection = () => {

@@ -7,13 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useQuestions } from "@/hooks/useQuestions";
-import useTriviaStore from "../stores/useTriviaStore";
 import { Spinner } from "@/components/ui/spinner";
-import { useEffect } from "react";
-import { normalizeQuestions } from "../normalizer";
-import AnswersButton from "./atoms/AnswersButton";
+import { useQuestions } from "@/hooks/useQuestions";
+import { normalizeQuestions } from "@/lib/normalizer";
+import useTriviaStore from "@/stores/useTriviaStore";
+import AnswersButton from "@/views/components/AnswersButton";
+import ScoreBox from "@/views/components/ScoreBox";
 import { CircleCheckIcon, CircleXIcon } from "lucide-react";
+import { useEffect } from "react";
 
 const TriviaScreenSection = () => {
   const {
@@ -163,16 +164,8 @@ const TriviaScreenSection = () => {
         </CardContent>
 
         <CardFooter className="flex gap-4 justify-center mt-8">
-          <div className="border-4 py-2 px-4 bg-green-500">
-            <p className="text-lg flex items-center gap-2 font-medium">
-              <CircleCheckIcon /> <span>{correct}</span>
-            </p>
-          </div>
-          <div className="border-4 py-2 px-4 bg-red-500">
-            <p className="text-lg flex items-center gap-2 font-medium">
-              <CircleXIcon /> <span>{incorrect}</span>
-            </p>
-          </div>
+          <ScoreBox icon={<CircleCheckIcon />} value={correct} color="green" />
+          <ScoreBox icon={<CircleXIcon />} value={incorrect} color="red" />
         </CardFooter>
       </Card>
     </div>

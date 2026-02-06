@@ -1,4 +1,4 @@
-import { getValidatedToken } from "@/trivia/stores/token.manager";
+import { getValidatedToken } from "@/stores/token.manager";
 import { useQuery } from "@tanstack/react-query";
 
 export const TOKEN_QUERY_KEY = ["public-trivia_token"];
