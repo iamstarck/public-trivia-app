@@ -1,5 +1,5 @@
 import HomeSection from "./views/sections/home/HomeSection";
-import ResultSection from "./views/sections/ResultSection";
+import ResultSection from "./views/sections/result/ResultSection";
 import TriviaConfigurationSection from "./views/sections/configuration/TriviaConfigurationSection";
 import useTriviaStore from "./stores/useTriviaStore";
 import TriviaScreenSection from "./views/sections/trivia/TriviaScreenSection";
