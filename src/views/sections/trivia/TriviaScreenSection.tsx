@@ -7,96 +7,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useQuestions } from "@/hooks/useQuestions";
-import useTriviaStore from "../stores/useTriviaStore";
 import { Spinner } from "@/components/ui/spinner";
-import { useEffect } from "react";
-import { normalizeQuestions } from "../normalizer";
-import AnswersButton from "./atoms/AnswersButton";
+import ScoreBox from "@/views/components/ScoreBox";
 import { CircleCheckIcon, CircleXIcon } from "lucide-react";
+import { useTriviaScreen } from "./useTriviaScreen";
+import AnswersButton from "@/views/components/AnswersButton";
 
 const TriviaScreenSection = () => {
   const {
     userName,
-    amount,
-    category,
     categoryName,
-    difficulty,
-    triviaType,
+    amount,
     questions,
-    currentIndex,
-    addAnswer,
     correct,
     incorrect,
+    isLoading,
+    error,
+    refetch,
+    currentQuestion,
+    currentIndex,
+    onHandleAnswer,
+    getButtonClass,
     answerFeedback,
-    answers,
-  } = useTriviaStore();
-
-  const { data, isLoading, error, refetch } = useQuestions({
-    amount,
-    type: triviaType,
-    category,
-    difficulty,
-  });
-
-  const setScreen = useTriviaStore((q) => q.setScreen);
-  const setQuestions = useTriviaStore((q) => q.setQuestions);
-  const submitAnswer = useTriviaStore((a) => a.submitAnswer);
-  const nextQuestion = useTriviaStore((q) => q.nextQuestion);
-  const showAnswerFeedback = useTriviaStore((s) => s.showAnswerFeedback);
-
-  useEffect(() => {
-    if (!error) return;
-
-    if (
-      typeof error === "object" &&
-      "type" in error &&
-      (error.type === "TOKEN_INVALID" || error.type === "TOKEN_EXHAUSTED")
-    ) {
-      setScreen("configuration");
-    }
-  }, [error, setScreen]);
-
-  useEffect(() => {
-    if (!data || !triviaType) return;
-
-    const normalized = normalizeQuestions(data, triviaType);
-    setQuestions(normalized);
-  }, [data, triviaType, setQuestions]);
-
-  const currentQuestion = questions[currentIndex];
-
-  const onHandleAnswer = (answerIndex: number) => {
-    if (answerFeedback) return;
-
-    const q = questions[currentIndex];
-    const isCorrect = answerIndex === q.correctIndex;
-
-    addAnswer(currentIndex, answerIndex);
-    submitAnswer(isCorrect);
-
-    showAnswerFeedback(true);
-    setTimeout(nextQuestion, 1500);
-  };
-
-  const getButtonClass = (answerIndex: number) => {
-    if (!answerFeedback) {
-      return "";
-    }
-
-    if (answerIndex === currentQuestion.correctIndex) {
-      return "bg-green-500";
-    }
-
-    if (
-      answerIndex === answers[currentIndex] &&
-      answerIndex !== currentQuestion.correctIndex
-    ) {
-      return "bg-primary";
-    }
-
-    return "";
-  };
+  } = useTriviaScreen();
 
   if (error) {
     return (
@@ -163,16 +96,8 @@ const TriviaScreenSection = () => {
         </CardContent>
 
         <CardFooter className="flex gap-4 justify-center mt-8">
-          <div className="border-4 py-2 px-4 bg-green-500">
-            <p className="text-lg flex items-center gap-2 font-medium">
-              <CircleCheckIcon /> <span>{correct}</span>
-            </p>
-          </div>
-          <div className="border-4 py-2 px-4 bg-red-500">
-            <p className="text-lg flex items-center gap-2 font-medium">
-              <CircleXIcon /> <span>{incorrect}</span>
-            </p>
-          </div>
+          <ScoreBox icon={<CircleCheckIcon />} value={correct} color="green" />
+          <ScoreBox icon={<CircleXIcon />} value={incorrect} color="red" />
         </CardFooter>
       </Card>
     </div>

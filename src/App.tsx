@@ -1,8 +1,8 @@
-import HomeSection from "./trivia/components/HomeSection";
-import ResultSection from "./trivia/components/ResultSection";
-import TriviaConfigurationSection from "./trivia/components/TriviaConfigurationSection";
-import useTriviaStore from "./trivia/stores/useTriviaStore";
-import TriviaScreenSection from "./trivia/components/TriviaScreenSection";
+import HomeSection from "./views/sections/home/HomeSection";
+import ResultSection from "./views/sections/result/ResultSection";
+import TriviaConfigurationSection from "./views/sections/configuration/TriviaConfigurationSection";
+import useTriviaStore from "./stores/useTriviaStore";
+import TriviaScreenSection from "./views/sections/trivia/TriviaScreenSection";
 
 function App() {
   const screen = useTriviaStore((s) => s.screen);

@@ -1,7 +1,7 @@
 import fetchCategories, {
   EXCLUDED,
   removePrefix,
-} from "@/trivia/api/categories.service";
+} from "@/api/categories.service";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCategories = () =>

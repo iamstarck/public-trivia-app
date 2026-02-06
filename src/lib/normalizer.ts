@@ -1,6 +1,6 @@
 import type { Question } from "@/hooks/useQuestions";
 import he from "he";
-import type { TriviaType } from "./stores/useTriviaStore";
+import type { TriviaType } from "../stores/useTriviaStore";
 
 export interface TriviaQuestion {
   question: string;

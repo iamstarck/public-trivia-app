@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useToken } from "./useToken";
-import { fetchQuestions } from "@/trivia/api/questions.service";
-import type { TriviaError } from "@/trivia/api/trivia.errors";
-import { refreshToken } from "@/trivia/stores/token.manager";
+import { fetchQuestions } from "@/api/questions.service";
+import type { TriviaError } from "@/api/trivia.errors";
+import { refreshToken } from "@/stores/token.manager";
 
 export interface Question {
   type: string;
