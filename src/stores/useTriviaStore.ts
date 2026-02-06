@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { TriviaQuestion } from "../normalizer";
+import type { TriviaQuestion } from "../lib/normalizer";
 
 type Screen = "home" | "configuration" | "trivia" | "result";
 export type Difficulty = "easy" | "medium" | "hard";

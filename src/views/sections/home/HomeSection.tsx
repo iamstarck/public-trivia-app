@@ -17,44 +17,15 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { CircleAlertIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import useTriviaStore from "../stores/useTriviaStore";
-
-const playerSchema = z.object({
-  playerName: z
-    .string()
-    .min(3, { error: "Min 3" })
-    .max(12, { error: "Max 12" }),
-});
-
-type PlayerFormValues = z.infer<typeof playerSchema>;
+import { usePlayerForm } from "./usePlayerForm";
 
 const HomeSection = () => {
-  const insertPlayerName = useTriviaStore((s) => s.setUserName);
-
-  const defaultValues: PlayerFormValues = {
-    playerName: "",
-  };
-
-  const form = useForm<PlayerFormValues>({
-    resolver: zodResolver(playerSchema),
-    defaultValues,
-  });
-
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = form;
-
-  const onSubmitHandler = (data: PlayerFormValues) => {
-    insertPlayerName(data);
-
-    reset(defaultValues);
-  };
+    onSubmit,
+  } = usePlayerForm();
 
   return (
     <div className="flex flex-col items-center min-h-screen justify-center">
@@ -99,7 +70,7 @@ const HomeSection = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-4 py-4">
                 <div className="flex flex-col gap-4">
                   <FieldSet>
