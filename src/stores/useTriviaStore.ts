@@ -19,6 +19,8 @@ interface TriviaState {
   correct: number;
   incorrect: number;
   answerFeedback: boolean;
+  timer: number;
+  isTimerRunning: boolean;
 
   setScreen: (screen: Screen) => void;
   setUserName: (data: { playerName: string }) => void;
@@ -28,6 +30,9 @@ interface TriviaState {
   setCategory: (c?: number | null, name?: string) => void;
   setQuestions: (qs: TriviaQuestion[]) => void;
   nextQuestion: () => void;
+  initTimer: () => void;
+  tickTimer: () => void;
+  stopTimer: () => void;
   addAnswer: (q: number, a: number) => void;
   submitAnswer: (isCorrect: boolean) => void;
   showAnswerFeedback: (feedback: boolean) => void;
@@ -49,6 +54,8 @@ const useTriviaStore = create<TriviaState>((set) => ({
   correct: 0,
   incorrect: 0,
   answerFeedback: false,
+  timer: 0,
+  isTimerRunning: false,
 
   setScreen: (screen) => set({ screen }),
   setUserName: (data) =>
@@ -71,6 +78,38 @@ const useTriviaStore = create<TriviaState>((set) => ({
       correct: 0,
       incorrect: 0,
     }),
+
+  initTimer: () =>
+    set((s) => {
+      const perQuestion =
+        s.difficulty === "easy"
+          ? 15
+          : s.difficulty === "medium"
+            ? 25
+            : s.difficulty === "hard"
+              ? 35
+              : 0;
+
+      return {
+        timer: (s.amount ?? 0) * perQuestion,
+        isTimerRunning: true,
+      };
+    }),
+
+  tickTimer: () =>
+    set((s) => {
+      if (s.timer <= 1) {
+        return {
+          timer: 0,
+          isTimerRunning: false,
+          screen: "result",
+        };
+      }
+
+      return { timer: s.timer - 1 };
+    }),
+
+  stopTimer: () => set({ isTimerRunning: false }),
 
   nextQuestion: () =>
     set((s) => {
@@ -118,6 +157,8 @@ const useTriviaStore = create<TriviaState>((set) => ({
       correct: 0,
       incorrect: 0,
       answerFeedback: false,
+      timer: 0,
+      isTimerRunning: false,
     }),
 }));
 
