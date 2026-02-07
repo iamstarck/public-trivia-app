@@ -68,7 +68,7 @@ export const useTriviaScreen = () => {
     submitAnswer(isCorrect);
 
     showAnswerFeedback(true);
-    setTimeout(nextQuestion, 1500);
+    setTimeout(nextQuestion, 1000);
   };
 
   const getButtonClass = (answerIndex: number) => {
