@@ -12,6 +12,9 @@ import ScoreBox from "@/views/components/ScoreBox";
 import { CircleCheckIcon, CircleXIcon } from "lucide-react";
 import { useTriviaScreen } from "./useTriviaScreen";
 import AnswersButton from "@/views/components/AnswersButton";
+import Countdown from "@/views/components/Countdown";
+import { useEffect } from "react";
+import { useTriviaTimer } from "./useTriviaTimer";
 
 const TriviaScreenSection = () => {
   const {
@@ -19,6 +22,9 @@ const TriviaScreenSection = () => {
     categoryName,
     amount,
     questions,
+    timer,
+    initTimer,
+    stopTimer,
     correct,
     incorrect,
     isLoading,
@@ -30,6 +36,14 @@ const TriviaScreenSection = () => {
     getButtonClass,
     answerFeedback,
   } = useTriviaScreen();
+
+  useEffect(() => {
+    initTimer();
+
+    return () => stopTimer();
+  }, [initTimer, stopTimer]);
+
+  useTriviaTimer();
 
   if (error) {
     return (
@@ -69,7 +83,7 @@ const TriviaScreenSection = () => {
           <CardTitle>
             <div className="flex justify-between">
               <h2>Player: {userName}</h2>
-              {/* <h2 className="text-accent">10:00</h2> */}
+              <Countdown timeLeft={timer} />
             </div>
           </CardTitle>
           <CardDescription className="text-base font-extrabold">

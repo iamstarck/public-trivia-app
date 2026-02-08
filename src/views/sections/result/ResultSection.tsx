@@ -26,10 +26,13 @@ const ResultSection = () => {
     difficulty,
     triviaType,
     amount,
+    answers,
     correct,
-    incorrect,
     reset,
   } = useTriviaStore();
+
+  const answered = Object.keys(answers).length;
+  const wrong = answered - correct;
 
   const percentage = getResultPercentage(correct ?? 0, amount ?? 0);
   const { message, color } = performanceConfig(percentage);
@@ -55,10 +58,13 @@ const ResultSection = () => {
               color,
             )}
           >
-            <div>
-              <h2 className="text-4xl font-bold text-center leading-normal">
-                {percentage}%
-              </h2>
+            <div className="space-y-2">
+              <div>
+                <p className="text-2xl font-bold text-center">Accuracy</p>
+                <h2 className="text-4xl font-bold text-center">
+                  {percentage}%
+                </h2>
+              </div>
 
               <h2 className="text-2xl font-bold text-center leading-normal flex items-center gap-2">
                 {message}
@@ -76,6 +82,7 @@ const ResultSection = () => {
               />
               <ResultInfoRow label="Type" value={triviaTypeLabel(triviaType)} />
               <ResultInfoRow label="Total Questions" value={amount} />
+              <ResultInfoRow label="Total Answered" value={answered} />
             </div>
           </div>
 
@@ -85,7 +92,7 @@ const ResultSection = () => {
               value={correct}
               color="green"
             />
-            <ScoreBox icon={<CircleXIcon />} value={incorrect} color="red" />
+            <ScoreBox icon={<CircleXIcon />} value={wrong} color="red" />
           </div>
         </CardContent>
 
