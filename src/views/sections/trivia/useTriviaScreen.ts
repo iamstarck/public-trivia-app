@@ -12,6 +12,9 @@ export const useTriviaScreen = () => {
     difficulty,
     triviaType,
     questions,
+    timer,
+    initTimer,
+    stopTimer,
     currentIndex,
     correct,
     incorrect,
@@ -65,7 +68,7 @@ export const useTriviaScreen = () => {
     submitAnswer(isCorrect);
 
     showAnswerFeedback(true);
-    setTimeout(nextQuestion, 1500);
+    setTimeout(nextQuestion, 1000);
   };
 
   const getButtonClass = (answerIndex: number) => {
@@ -92,6 +95,9 @@ export const useTriviaScreen = () => {
     categoryName,
     amount,
     questions,
+    timer,
+    initTimer,
+    stopTimer,
     correct,
     incorrect,
     isLoading,
