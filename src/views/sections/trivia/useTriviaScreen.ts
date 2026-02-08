@@ -25,7 +25,6 @@ export const useTriviaScreen = () => {
     nextQuestion,
     showAnswerFeedback,
     setQuestions,
-    setScreen,
   } = useTriviaStore();
 
   const { data, isLoading, error, refetch } = useQuestions({
@@ -34,18 +33,6 @@ export const useTriviaScreen = () => {
     category,
     difficulty,
   });
-
-  useEffect(() => {
-    if (!error) return;
-
-    if (
-      typeof error === "object" &&
-      "type" in error &&
-      (error.type === "TOKEN_INVALID" || error.type === "TOKEN_EXHAUSTED")
-    ) {
-      setScreen("configuration");
-    }
-  }, [error, setScreen]);
 
   useEffect(() => {
     if (!data || !triviaType) return;
