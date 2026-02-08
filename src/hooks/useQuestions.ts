@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useToken } from "./useToken";
+import { TOKEN_QUERY_KEY, useToken } from "./useToken";
 import { fetchQuestions } from "@/api/questions.service";
 import type { TriviaError } from "@/api/trivia.errors";
 import { refreshToken } from "@/stores/token.manager";
+import { queryClient } from "@/lib/queryClient";
 
 export interface Question {
   type: string;
@@ -62,10 +63,13 @@ export const useQuestions = (params: QuestionParams, enabled = true) => {
           return data.results;
 
         case 3:
+          await refreshToken();
+          queryClient.invalidateQueries({ queryKey: TOKEN_QUERY_KEY });
           throw { type: "TOKEN_INVALID" } satisfies TriviaError;
 
         case 4:
           await refreshToken();
+          queryClient.invalidateQueries({ queryKey: TOKEN_QUERY_KEY });
           throw { type: "TOKEN_EXHAUSTED" } satisfies TriviaError;
 
         default:
