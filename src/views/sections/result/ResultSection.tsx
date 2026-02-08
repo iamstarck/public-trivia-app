@@ -2,12 +2,19 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { CircleCheckIcon, CircleXIcon, TrophyIcon } from "lucide-react";
+import {
+  BoxIcon,
+  ChartNoAxesColumnIncreasingIcon,
+  CheckIcon,
+  RotateCcwIcon,
+  ScrollTextIcon,
+  TargetIcon,
+  TrophyIcon,
+  XIcon,
+} from "lucide-react";
 import useTriviaStore from "../../../stores/useTriviaStore";
 import { cn } from "@/lib/utils";
 import {
@@ -17,7 +24,6 @@ import {
   triviaTypeLabel,
 } from "./resultUtils";
 import ResultInfoRow from "@/views/components/ResultInfoRow";
-import ScoreBox from "@/views/components/ScoreBox";
 
 const ResultSection = () => {
   const {
@@ -39,66 +45,105 @@ const ResultSection = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen justify-center">
-      <Card className="max-w-4xl m-4">
-        <CardHeader>
-          <CardTitle className="flex flex-col items-center gap-4">
-            <div className="bg-secondary border-4 w-fit p-4">
-              <TrophyIcon size={"4rem"} />
-            </div>
-            Quiz Over!
-          </CardTitle>
-          <CardDescription className="text-xl text-center font-extrabold">
-            Well done, {userName}!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4 items-center">
-          <div
-            className={cn(
-              "flex flex-col items-center gap-4 border-4 p-8",
-              color,
-            )}
-          >
-            <div className="space-y-2">
-              <div>
-                <p className="text-2xl font-bold text-center">Accuracy</p>
-                <h2 className="text-4xl font-bold text-center">
-                  {percentage}%
-                </h2>
+      <Card className="m-4 max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
+        <CardHeader className="space-y-4">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold text-center">QUIZ COMPLETE</h1>
+            <h1 className="text-xl text-center font-semibold">
+              Well done, {userName}! 🎉
+            </h1>
+          </div>
+          <div className="flex items-center justify-between gap-6 w-full">
+            <div
+              className={cn(
+                "flex flex-col items-center w-full gap-4 border-4 p-4",
+                color,
+              )}
+            >
+              <div className="space-y-2">
+                <div>
+                  <p className="text-lg font-bold text-center">Accuracy</p>
+                  <h2 className="text-4xl font-bold text-center leading-normal">
+                    {percentage}%
+                  </h2>
+                </div>
+
+                <p className=" text-xl font-semibold text-center leading-normal flex max-md:flex-col items-center gap-2">
+                  {message}
+                </p>
               </div>
-
-              <h2 className="text-2xl font-bold text-center leading-normal flex items-center gap-2">
-                {message}
-              </h2>
             </div>
 
-            <div className="flex flex-col text-center border-4 p-4 gap-4 bg-accent-foreground md:w-md">
-              <ResultInfoRow
-                label="Category"
-                value={toSentenceCase(categoryName)}
-              />
-              <ResultInfoRow
-                label="Difficulty"
-                value={toSentenceCase(difficulty)}
-              />
-              <ResultInfoRow label="Type" value={triviaTypeLabel(triviaType)} />
-              <ResultInfoRow label="Total Questions" value={amount} />
-              <ResultInfoRow label="Total Answered" value={answered} />
+            <div className="bg-secondary border-4 w-fit p-4 rotate-3">
+              <TrophyIcon size={80} />
             </div>
           </div>
+        </CardHeader>
 
-          <div className="flex justify-center mt-8 gap-8">
-            <ScoreBox
-              icon={<CircleCheckIcon />}
-              value={correct}
-              color="green"
+        <CardContent className="flex flex-col items-center gap-4">
+          <div className="w-full space-y-2">
+            <ResultInfoRow
+              bgColor="chart-5"
+              icon={<TargetIcon size={28} className="stroke-chart-5" />}
+              label="Category"
+              value={toSentenceCase(categoryName)}
+              textColor="text-background"
             />
-            <ScoreBox icon={<CircleXIcon />} value={wrong} color="red" />
+
+            <ResultInfoRow
+              bgColor="chart-5"
+              icon={
+                <ChartNoAxesColumnIncreasingIcon
+                  size={28}
+                  className="stroke-chart-5"
+                />
+              }
+              label="Difficulty"
+              value={toSentenceCase(difficulty)}
+              textColor="text-background"
+            />
+
+            <ResultInfoRow
+              bgColor="chart-5"
+              icon={<BoxIcon size={28} className="stroke-chart-5" />}
+              label="Type"
+              value={triviaTypeLabel(triviaType)}
+              textColor="text-background"
+            />
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <ResultInfoRow
+              bgColor="cyan-500"
+              icon={<ScrollTextIcon size={28} className="stroke-cyan-500" />}
+              label="Answered"
+              value={`${answered} / ${amount}`}
+            />
+
+            <ResultInfoRow
+              bgColor="green-500"
+              icon={<CheckIcon size={28} className="stroke-green-500" />}
+              label="Correct"
+              value={`${correct} / ${amount}`}
+            />
+
+            <ResultInfoRow
+              bgColor="red-500"
+              icon={<XIcon size={28} className="stroke-red-500" />}
+              label="Wrong"
+              value={`${wrong} / ${amount}`}
+            />
           </div>
         </CardContent>
 
         <CardFooter>
-          <Button onClick={() => reset()} variant={"brutal"} className="w-full">
-            Take Another Quiz
+          <Button
+            onClick={() => reset()}
+            variant={"brutal"}
+            className="w-full space-x-2"
+          >
+            <span>Take Another Quiz</span>
+            <RotateCcwIcon size={18} />
           </Button>
         </CardFooter>
       </Card>
