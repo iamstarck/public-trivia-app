@@ -9,6 +9,13 @@ interface ResultInfoRowProps {
   textColor?: string;
 }
 
+const bgMap = {
+  "chart-5": "bg-chart-5",
+  "cyan-500": "bg-cyan-500",
+  "green-500": "bg-green-500",
+  "red-500": "bg-red-500",
+} as const;
+
 const ResultInfoRow = ({
   icon,
   label,
@@ -20,7 +27,7 @@ const ResultInfoRow = ({
     <div
       className={cn(
         "flex items-center border-4 py-2 px-4 space-x-2",
-        `bg-${bgColor}`,
+        bgMap[bgColor],
       )}
     >
       <div className="flex items-center h-fit p-1 border-3 bg-primary-foreground ">
